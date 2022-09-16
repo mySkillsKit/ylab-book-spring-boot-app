@@ -1,18 +1,22 @@
-package com.edu.ulab.app.dto;
+package com.edu.ulab.app.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookDto {
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
     private String title;
     private String author;
     private long pageCount;
+
 }
