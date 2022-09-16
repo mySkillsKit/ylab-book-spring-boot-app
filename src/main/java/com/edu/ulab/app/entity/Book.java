@@ -1,18 +1,18 @@
-package com.edu.ulab.app.dto;
+package com.edu.ulab.app.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookDto {
+
+public class Book {
     private Long id;
     private Long userId;
     private String title;
     private String author;
     private long pageCount;
+
 }
