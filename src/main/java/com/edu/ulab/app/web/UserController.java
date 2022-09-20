@@ -1,5 +1,6 @@
 package com.edu.ulab.app.web;
 
+import com.edu.ulab.app.exception.NotFoundException;
 import com.edu.ulab.app.facade.UserDataFacade;
 import com.edu.ulab.app.web.constant.WebConstant;
 import com.edu.ulab.app.web.request.UserBookRequest;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
 import static com.edu.ulab.app.web.constant.WebConstant.REQUEST_ID_PATTERN;
@@ -40,7 +42,7 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PostMapping(value = "/create")
-    public UserBookResponse createUserWithBooks(@RequestBody UserBookRequest request,
+    public UserBookResponse createUserWithBooks(@Valid @RequestBody UserBookRequest request,
                                                 @RequestHeader(RQID) @Pattern(regexp = REQUEST_ID_PATTERN) final String requestId) {
         UserBookResponse response = userDataFacade.createUserWithBooks(request);
         log.info("Response with created user and his books: {}", response);
@@ -58,8 +60,9 @@ public class UserController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error",
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @PutMapping(value = "/update/{userId}")
-    public UserBookResponse updateUserWithBooks(@RequestBody UserBookRequest request,
+    public UserBookResponse updateUserWithBooks(@Valid @RequestBody UserBookRequest request,
                                                 @PathVariable Long userId) {
+        checkPositiveNumber(userId);
         UserBookResponse response = userDataFacade.updateUserWithBooks(request, userId);
         log.info("Response with updated user and his books: {}", response);
         return response;
@@ -77,11 +80,11 @@ public class UserController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping(value = "/get/{userId}")
     public UserBookResponse getUserWithBooks(@PathVariable Long userId) {
+        checkPositiveNumber(userId);
         UserBookResponse response = userDataFacade.getUserWithBooks(userId);
         log.info("Response with user and his books: {}", response);
         return response;
     }
-
 
     @Operation(summary = "Delete user and his books by userId")
     @ApiResponse(responseCode = "200", description = "Deleted successfully")
@@ -92,7 +95,16 @@ public class UserController {
             content = {@Content(mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @DeleteMapping(value = "/delete/{userId}")
     public void deleteUserWithBooks(@PathVariable Long userId) {
+        checkPositiveNumber(userId);
         log.info("Delete user and his books:  userId {}", userId);
         userDataFacade.deleteUserWithBooks(userId);
     }
+
+    private void checkPositiveNumber(Long userId) {
+        if (userId <= 0L) {
+            throw new NotFoundException("Invalid input UserId: "
+                    + userId + " Please check id and try again");
+        }
+    }
+
 }
