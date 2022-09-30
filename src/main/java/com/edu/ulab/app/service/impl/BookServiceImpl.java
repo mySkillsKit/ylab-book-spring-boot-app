@@ -5,6 +5,7 @@ import com.edu.ulab.app.entity.Book;
 import com.edu.ulab.app.exception.NotFoundException;
 import com.edu.ulab.app.mapper.BookMapper;
 import com.edu.ulab.app.repository.BookRepository;
+import com.edu.ulab.app.repository.UserRepository;
 import com.edu.ulab.app.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,12 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final UserRepository userRepository;
 
     @Override
     public BookDto createBook(BookDto bookDto) {
         Book book = bookMapper.bookDtoToBook(bookDto);
+        book.setPerson(userRepository.findById(bookDto.getUserId()).get());
         log.info("Mapped book: {}", book);
         Book savedBook = bookRepository.save(book);
         log.info("Saved book: {}", savedBook);
@@ -30,6 +33,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBook(BookDto bookDto) {
         Book book = bookMapper.bookDtoToBook(bookDto);
+        book.setPerson(userRepository.findById(bookDto.getUserId()).get());
         log.info("Mapped book: {}", book);
         Book updateBook = bookRepository.save(book);
         log.info("Update book: {}", book);

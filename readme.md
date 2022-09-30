@@ -2,7 +2,10 @@
 2. проверить работу приложения возможно по этому ендпоинту: http://localhost:8091/app/actuator
 3. посмотреть сваггер возможно тут: http://localhost:8091/app/swagger-ui/index.html
 
-docker run --name postgres -d -p 15432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres:alpine
+```docker run --name mpl_ulab_db -d -p 5432:5432 -e POSTGRES_USER=test -e POSTGRES_PASSWORD=test postgres:14```
+
+```CREATE DATABASE mpl_ulab_db;```
+
 
 rqid requestId1010101
 Post Request```http://localhost:8091/app/api/v1/user/create```
@@ -35,11 +38,11 @@ user id = 1
 
 ```
 {
-    "userId": 1,
+    "userId": 100,
     "booksIdList": [
-        1,
-        2,
-        3
+        200,
+        201,
+        202
     ]
 } 
 ```
@@ -75,32 +78,32 @@ user id = 1
 200 OK ->
 ```
 {
-    "userId": 2,
+    "userId": 101,
     "booksIdList": [
-        4,
-        5,
-        6,
+        203,
+        204,
+        205
     ]
 }
 
 ```
 
-Get Request ```http://localhost:8091/app/api/v1/user/get/2```
+Get Request ```http://localhost:8091/app/api/v1/user/get/101```
 
 200 OK ->
 ```
 {
-    "userId": 2,
+    "userId": 101,
     "booksIdList": [
-        4,
-        5,
-        6
+        203,
+        204,
+        205
     ]
 }
 
 ```
 
-Put Request id=2 ```http://localhost:8091/app/api/v1/user/update```
+Put Request  ```http://localhost:8091/app/api/v1/user/update```
 
 ```
 {
@@ -136,12 +139,12 @@ Put Request id=2 ```http://localhost:8091/app/api/v1/user/update```
 
 ```
 {
-    "userId": 2,
+    "userId": 101,
     "booksIdList": [
-        7,
-        8,
-        9,
-        10
+        206,
+        207,
+        208,
+        209
     ]
 }
 

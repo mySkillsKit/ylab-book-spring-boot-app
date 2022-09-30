@@ -5,9 +5,7 @@ import com.edu.ulab.app.dto.UserDto;
 import com.edu.ulab.app.mapper.BookMapper;
 import com.edu.ulab.app.mapper.UserMapper;
 import com.edu.ulab.app.service.impl.BookServiceImpl;
-import com.edu.ulab.app.service.impl.BookServiceImplTemplate;
 import com.edu.ulab.app.service.impl.UserServiceImpl;
-import com.edu.ulab.app.service.impl.UserServiceImplTemplate;
 import com.edu.ulab.app.web.request.UserBookRequest;
 import com.edu.ulab.app.web.response.UserBookResponse;
 import lombok.RequiredArgsConstructor;
@@ -97,10 +95,7 @@ public class UserDataFacade {
     public void deleteUserWithBooks(Long userId) {
         log.info("Delete user with books by UserId: {}", userId);
         userService.deleteUserById(userId);
-        List<Long> bookIdList = userService.getUserBooks(userId);
-        bookIdList.stream().filter(Objects::nonNull)
-                .forEach(bookService::deleteBookById);
         log.info("Successfully! Delete user with books by id: {}. " +
-                "Collected book deleted ids: {}", userId, bookIdList);
+                "Collected book deleted", userId);
     }
 }

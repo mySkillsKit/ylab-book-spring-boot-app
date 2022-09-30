@@ -4,6 +4,7 @@ import com.edu.ulab.app.dto.UserDto;
 import com.edu.ulab.app.entity.Person;
 import com.edu.ulab.app.exception.NotFoundException;
 import com.edu.ulab.app.mapper.UserMapper;
+import com.edu.ulab.app.repository.BookRepository;
 import com.edu.ulab.app.repository.UserRepository;
 import com.edu.ulab.app.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final BookRepository bookRepository;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -66,6 +69,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long id) {
         Person deleteUser = getPersonById(id);
         log.info("Delete user by id: {}", deleteUser);
+        List<Long> bookIdList = userRepository.getUserBooks(id);
+        bookIdList.stream().filter(Objects::nonNull)
+                .forEach(bookRepository::deleteById);
         userRepository.deleteById(id);
     }
 

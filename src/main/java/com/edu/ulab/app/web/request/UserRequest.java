@@ -6,14 +6,19 @@ import javax.validation.constraints.*;
 
 @Data
 public class UserRequest {
+    @NotNull(message = "Invalid fullName: not Null")
+    @NotEmpty(message = "Invalid fullName: not Empty")
     @NotBlank(message = "Invalid fullName: Must not contain only spaces")
     @Size(min = 2, max = 30, message = "Invalid fullName: Must be min 2 characters")
     private String fullName;
 
+    @NotNull(message = "Invalid title: not Null")
+    @NotEmpty(message = "Invalid title: not Empty")
     @NotBlank(message = "Invalid title: Must not contain only spaces")
     @Size(min = 1, max = 30, message = "Invalid title: Must be min 1 characters")
     private String title;
 
+    @NotNull(message = "Invalid age: not Null")
     @Min(value = 1, message = "Invalid age: positive number, min 1 is required")
     @Max(value = 150, message = "Invalid age: positive number, max 150 is required")
     private int age;

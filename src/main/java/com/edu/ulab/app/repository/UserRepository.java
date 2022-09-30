@@ -4,11 +4,13 @@ import com.edu.ulab.app.entity.Person;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends CrudRepository<Person, Long> {
 
     /*
@@ -21,7 +23,7 @@ public interface UserRepository extends CrudRepository<Person, Long> {
     @Query("select p from Person p where p.id = :id")
     Optional<Person> findByIdForUpdate(long id);
 
-    @Query("select b.id from Book b where b.userId = :id")
+    @Query("select b.id from Book b where b.person.id = :id")
     List<Long> getUserBooks(Long id);
 
     Person findByFullName(String fullName);
